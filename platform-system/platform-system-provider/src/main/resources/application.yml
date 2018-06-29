@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: platform-system-provider
+  profiles:
+    active: local
+
+mybatis:
+  typeAliasesPackage: com.elead.ppm.project.domain
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mybatis/*.xml

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elead.ppm.project.provider.dao.ELProjectDao">
+	<resultMap id="ELProjectMap" type="com.elead.ppm.project.domain.entity.ELProject">
+		<id 	column="id" 					jdbcType="VARCHAR" 		property="id" />
+		<result column="parent_id" 				jdbcType="VARCHAR" 		property="parentId" />
+		<result column="code" 					jdbcType="VARCHAR" 		property="code" />
+		<result column="name" 					jdbcType="VARCHAR" 		property="name" />
+		<result column="description" 			jdbcType="VARCHAR" 		property="description" />
+		<result column="type" 					jdbcType="VARCHAR" 		property="type" />
+		<result column="pm_id" 					jdbcType="VARCHAR" 		property="pmId" />
+		<result column="template_id" 			jdbcType="VARCHAR" 		property="templateId" />	
+		<result column="is_template" 			jdbcType="VARCHAR" 		property="isTemplate" />					
+		<result column="is_archived" 			jdbcType="TINYINT" 		property="isArchived" />
+		<result column="state" 					jdbcType="VARCHAR" 		property="state" />
+		<result column="product_id" 			jdbcType="VARCHAR" 		property="productId" />
+		<result column="department_id" 			jdbcType="VARCHAR" 		property="departmentId" />
+		<result column="start_time" 			jdbcType="TIMESTAMP" 	property="startTime" />
+		<result column="finish_time" 			jdbcType="TIMESTAMP" 	property="finishTime" />
+		<result column="phase" 					jdbcType="TINYINT" 		property="phase" />
+		<result column="budget" 				jdbcType="REAL" 		property="budget" />
+		<result column="workload" 				jdbcType="SMALLINT" 	property="workload" />
+		<result column="visible_range" 			jdbcType="TINYINT" 		property="visibleRange" />
+		<result column="del_flag" 				jdbcType="TINYINT" 		property="delFlag" />
+		<result column="create_by" 				jdbcType="VARCHAR" 		property="createBy" />
+		<result column="create_time" 			jdbcType="TIMESTAMP" 	property="createTime" />
+		<result column="update_by" 				jdbcType="VARCHAR" 		property="updateBy" />
+		<result column="update_time" 			jdbcType="TIMESTAMP" 	property="updateTime" />
+		<result column="proj_category" 			jdbcType="VARCHAR" 		property="projCategory" />
+		<result column="product_category_id" 	jdbcType="VARCHAR" 		property="productCategoryId" />
+	    <collection property="projectMemberList" javaType="ArrayList" ofType="com.elead.ppm.project.domain.entity.ELProjectMember">
+		    <id column="mid" 					jdbcType="VARCHAR" 		property="id" />
+		    <result column="user_id" 			jdbcType="VARCHAR" 		property="userId"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getProjectById" parameterType="java.lang.String" resultMap="ELProjectMap">
+		SELECT t1.*, t2.member_id, t2.id as mid FROM proj_elproject t1 
+		LEFT JOIN proj_elprojectmember t2 ON t1.id = t2.object_id  WHERE t1.id = #{id, jdbcType=VARCHAR} 
+	</select>
+	
+	<sql id="and_condition">
+        <if test="name !=null and name !=''">
+			AND p.name LIKE CONCAT(CONCAT('%', #{name, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="isArchived != null and isArchived !=''">
+		    <choose>
+		        <when test="isArchived == 1">
+		         	AND p.is_archived = 1
+		        </when>
+		        <when test="isArchived == 2">
+		         	AND (p.is_archived = 0 OR p.is_archived IS NULL)
+		        </when>
+		    </choose>
+		</if>
+		<if test="state != null">
+			and p.state in
+			<foreach collection="state" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="type != null and type !=''">
+			AND p.type = #{type,jdbcType=VARCHAR}
+		</if>
+		<if test="pmId != null and pmId != ''">
+			AND p.id IN (SELECT DISTINCT m.object_id FROM proj_elprojectmember m WHERE m.user_id = #{pmId,jdbcType=VARCHAR} and role_key = 'PM') 
+		</if>
+		<if test="createBy != null and createBy != ''">
+			AND p.create_by = #{createBy,jdbcType=VARCHAR}
+		</if>
+		<!-- 目的是区分 项目、项目机会 ，通过数据字典配置的状态查询-->
+		<if test="stateList != null">
+			AND p.state IN
+			<foreach collection="stateList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+     </sql>
+	
+	<select id="getProjectList" resultMap="ELProjectMap" parameterType="java.util.HashMap">
+		SELECT p.* FROM proj_elproject p WHERE p.del_flag = 0 and (p.is_template != 1 OR p.is_template IS NULL)
+		<if test="readAll==false ">
+			AND p.id IN (SELECT DISTINCT m.object_id FROM proj_elprojectmember m WHERE m.user_id = #{userId})
+		</if>	
+		 <include refid="and_condition"></include>
+			ORDER BY
+			<if test="orderBy!=null and orderBy!=''">
+	           ${orderBy} ${sortBy}
+	        </if>
+	</select>
+	
+	<select id="getProjectTemplateList" resultMap="ELProjectMap" parameterType="java.util.HashMap">
+		SELECT p.* FROM proj_elproject p WHERE p.del_flag = 0 and p.is_template = 1 
+		    <include refid="and_condition"></include>
+			ORDER BY
+			<if test="orderBy!=null and orderBy!=''">
+	           ${orderBy} ${sortBy}
+	        </if>
+	</select>
+	
+
+	<select id="getMyAdministrationProject" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		(SELECT b.id, b.name,'1' p_type FROM proj_elproject b INNER JOIN proj_elprojectmyopen mo ON b.id = mo.object_id 
+		    WHERE b.state = 0 AND b.del_flag = 0  AND mo.del_flag = 0
+			<if test="keywords!=null and keywords!=''">
+            	AND b.name LIKE CONCAT(CONCAT('%', #{keywords, jdbcType=VARCHAR}),'%')
+       		</if>
+		     AND mo.user_id = #{userId,jdbcType=VARCHAR} ORDER BY mo.update_time DESC LIMIT 0,3)
+		     
+			UNION ALL
+		(SELECT b.id,b.name,'2' p_type FROM proj_elproject b WHERE b.del_flag = 0 AND b.state = 0
+			<if test="keywords!=null and keywords!=''">
+            	AND b.name LIKE CONCAT(CONCAT('%', #{keywords, jdbcType=VARCHAR}),'%')
+       		</if>
+		 AND b.create_by = #{userId,jdbcType=VARCHAR})
+		 
+		 
+			UNION ALL
+		(SELECT b.id,b.name,'3' p_type FROM proj_elproject b INNER JOIN proj_elprojectmember mb ON b.id = mb.object_id
+		  	WHERE b.del_flag = 0 AND mb.del_flag = 0 AND b.state = 0 and b.is_archived = 0 
+		  	<if test="keywords!=null and keywords!=''">
+            	AND b.name LIKE CONCAT(CONCAT('%', #{keywords, jdbcType=VARCHAR}),'%')
+       		</if>
+		  	AND mb.user_id = #{userId,jdbcType=VARCHAR})
+	</select>
+	
+	<select id="getMyCareProject" parameterType="String" resultType="java.util.HashMap">
+		SELECT * FROM proj_elproject b INNER JOIN proj_elprojectmycare mc ON b.id = mc.object_id WHERE
+   			b.del_flag = 0 AND mc.del_flag = 0 AND b.state = 0  
+   			<if test="keywords!=null and keywords!=''">
+            	AND b.name LIKE CONCAT(CONCAT('%', #{keywords, jdbcType=VARCHAR}),'%')
+       		</if>
+   			AND user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getArchivedProject" resultType="java.util.HashMap">
+		 SELECT distinct(b.id),b.name,'3' p_type FROM proj_elproject b INNER JOIN proj_elprojectmember mb ON b.id = mb.object_id
+ 		    WHERE b.del_flag = 0 
+ 		    	<!-- AND b.state = 0 -->
+ 		    	<!-- 目的是区分 项目、项目机会 ，通过数据字典配置的状态查询-->
+				<if test="stateList != null">
+					AND b.state IN
+					<foreach collection="stateList" index="index" item="item" open="("
+						separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+ 		    	and b.is_archived = 1 
+ 		    <if test="name!=null and name!=''">
+            	AND b.name LIKE CONCAT(CONCAT('%', #{name, jdbcType=VARCHAR}),'%')
+       		</if>
+ 		    AND mb.user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<delete id="delProjectMyOpen" parameterType="string">
+		DELETE FROM proj_elprojectmyopen WHERE id IN (
+        	SELECT t.id FROM (SELECT id FROM proj_elprojectmyopen WHERE  user_id = #{userId,jdbcType=VARCHAR} ORDER BY update_time DESC LIMIT 3,10) AS t
+        )
+	</delete>
+	
+  <!--  <select id="getFinishTaskByProjectIdCount" parameterType="java.lang.String" resultType="int">
+    SELECT COUNT(1) FROM task_baseinfo WHERE project_id = #{projectId} AND actual_finish_date IS NOT NULL AND state=1 AND del_flag!=1
+  </select>
+  
+  <select id="getAllTaskByProjectIdCount" parameterType="java.lang.String" resultType="int">
+    SELECT COUNT(1) FROM task_baseinfo WHERE project_id = #{projectId} AND del_flag!=1
+  </select>
+  
+  <select id="getDelayTaskByProjectIdCount" parameterType="java.lang.String" resultType="int">
+    SELECT COUNT(1) FROM task_baseinfo WHERE project_id = #{projectId} AND finish_date IS NOT NULL AND del_flag!=1 AND ((actual_finish_date IS NOT NULL AND finish_date &lt;  actual_finish_date)
+   OR (actual_finish_date IS NULL AND finish_date &gt; STR_TO_DATE(#{currentDate},'yyyy-MM-dd hh24:mi:ss')))
+  </select>
+  
+  <select id="getDoingTaskByProjectIdCount" parameterType="java.lang.String" resultType="int">
+    SELECT COUNT(1) FROM task_baseinfo WHERE project_id = #{projectId} AND finish_date IS NOT NULL AND actual_finish_date IS NULL AND del_flag!=1
+  </select> --> 
+  
+	<sql id="select_whole_project_info">
+		SELECT pb.*
+		FROM proj_elproject pb
+	</sql>
+	
+	<select id="getProjectsByConditions" resultMap="ELProjectMap" >
+		<include refid="select_whole_project_info"></include>
+		WHERE 1=2
+		<trim suffixOverrides="or">
+			OR
+			<trim prefix="(" suffix=")" suffixOverrides="and">
+				<choose>
+					<when test="hasParent==0">
+						pb.parent_id IS NULL AND
+					</when>
+					<when test="hasParent==1">
+						pb.parent_id IS NOT NULL AND
+					</when>
+					<when test="hasParent==2">
+						(pb.parent_id IS NULL OR pb.parent_id is NOT NULL) AND
+					</when>
+					<otherwise>
+						(pb.parent_id IS NULL AND pb.parent_id IS NOT NULL) AND
+					</otherwise>
+				</choose>
+				<!-- 目的是区分 项目、项目机会 ，通过数据字典配置的状态查询-->
+				<if test="stateList != null">
+					pb.state IN
+					<foreach collection="stateList" index="index" item="item" open="("
+						separator="," close=")">
+						#{item}
+					</foreach>
+					AND
+				</if>
+				<trim prefixOverrides="OR" prefix="(" suffix=")">
+					<if test="keyword!=null and keyword!=''">
+						pb.code LIKE CONCAT('%',#{keyword},'%')
+						OR pb.name LIKE CONCAT('%',#{keyword},'%')
+					</if>
+					<if test="keyword==null or keyword==''">
+						pb.code is null and pb.code is not null
+					</if>
+				</trim>
+			</trim>
+		</trim>
+	</select>
+	
+	<!-- <select id="getProjectByNameOrCode" resultMap="ELProjectMap">
+		<include refid="select_whole_project_info"></include>
+		WHERE 1=2
+		<trim suffixOverrides="OR">
+			OR
+			<trim prefix="(" suffix=")" suffixOverrides="AND">
+				<choose>
+					<when test="hasParent==0">
+						pb.parent_id IS NULL AND
+					</when>
+					<when test="hasParent==1">
+						pb.parent_id IS NOT NULL AND
+					</when>
+					<when test="hasParent==2">
+						(pb.parent_id IS NULL OR pb.parent_id IS NOT NULL) AND
+					</when>
+					<otherwise>
+						(pb.parent_id IS NULL AND pb.parent_id IS NOT NULL) AND
+					</otherwise>
+				</choose>
+				<trim prefixOverrides="OR" prefix="(" suffix=")">
+					<if test="keyword!=null and keyword!=''">
+						pb.project_id LIKE CONCAT('%',#{keyword},'%')
+						OR pb.name LIKE CONCAT('%',#{keyword},'%')
+					</if>
+				</trim>
+			</trim>
+		</trim>
+	</select> -->
+	
+	<select id="getChildrenById" resultMap="ELProjectMap">
+		<include refid="select_whole_project_info"></include>
+		WHERE pb.parent_id=#{projectId}
+	</select>
+	
+	<!-- <select id="getAllProjectList" resultMap="ELProjectMap" >
+		<include refid="select_whole_project_info"></include>
+	</select> -->
+	
+	<select id="getProjectInfoByProjectId" resultMap="ELProjectMap" >
+		<include refid="select_whole_project_info"></include>
+		WHERE pb.id=#{projectId}
+	</select>
+	
+	
+	<!-- 根据项目id查询该项目所在的项目树的根项目信息 -->
+	<select id="getProjectTreeRoot" resultMap="ELProjectMap">
+		<include refid="select_whole_project_info"></include>
+		where 1 = 2
+		<if test="projectId!=null and projectId!=''">
+			or pb.id = queryProjectRoot(#{projectId})
+		</if>
+	</select>
+	
+	<!-- 根据项目id列查询项目树（以当前项目节点为树根节点）中的项目列表 -->
+	<select id="getProjectTreeListById" resultMap="ELProjectMap">
+		<include refid="select_whole_project_info"></include>
+		where 1 = 2 
+		<if test="projectId!=null and projectId!=''">
+			or find_in_set(pb.id,queryChildren(#{projectId},'project'))
+		</if>
+	</select>
+	
+	<!-- 根据项目id获取第一层子项目id列表 -->
+	<select id="getFirstLevelChildrenProjectIdsByProjectId" resultType="String">
+		select id
+		from proj_elproject pb
+		where pb.parent_id=#{projectId}
+	</select>
+	
+	<select id="getPermissionProjectsByUserId" resultMap="ELProjectMap">
+		SELECT * FROM (SELECT * FROM proj_elproject p WHERE p.del_flag = '0' and p.is_template='0'
+		        AND (p.parent_id IS NULL OR p.parent_id = '')
+		        AND p.pm_id = #{userId}
+		        OR p.create_by = #{userId}
+		        OR (p.id IN (SELECT DISTINCT object_id FROM proj_elprojectmember WHERE user_id = #{userId}))) t
+		        <where>
+			        <if test="code!=null and code!=''">
+						t.code like CONCAT('%', #{code, jdbcType=VARCHAR},'%')
+					</if>
+					<if test="name!=null and name!=''">
+						and t.name like CONCAT('%', #{name, jdbcType=VARCHAR},'%')
+					</if>
+		        </where>
+	</select>
+</mapper>
