@@ -60,7 +60,8 @@ public abstract class BaseCRUDController<T extends BaseObject,S extends IELServi
     @PostMapping(value = "")
     @ResponseBody
     public CommonResponse add(@Valid @RequestBody final T entity) {
-        entity.setId(IdWorker.get32UUID());
+    	// TODO ID
+        //entity.setId(IdWorker.get32UUID());
         return service.insert(entity) ? CommonResponse.createCommonResponse(entity)
                 : CommonResponse.createExceptionsCommonResponse();
     }
@@ -78,7 +79,9 @@ public abstract class BaseCRUDController<T extends BaseObject,S extends IELServi
     @PutMapping(value = "/{id}")
     @ResponseBody
     public CommonResponse update(@PathVariable(value = "id") final String id, @RequestBody final T entity) {
-        entity.setId(id);
+        //TODO 恢复
+    	//entity.setId(id);
+    	entity.setId(Integer.parseInt(id));
         return service.updateById(entity) ? CommonResponse.createCommonResponse(entity) :
                 CommonResponse.createExceptionsCommonResponse();
     }

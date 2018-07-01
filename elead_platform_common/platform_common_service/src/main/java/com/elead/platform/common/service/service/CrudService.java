@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.elead.platform.common.constants.DomainConstants;
-import com.elead.platform.common.dto.QueryDto;
-import com.elead.platform.common.service.filter.FilterUtil;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -25,12 +22,14 @@ import com.baomidou.mybatisplus.mapper.SqlHelper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.baomidou.mybatisplus.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.baomidou.mybatisplus.toolkit.TableInfoHelper;
+import com.elead.platform.common.constants.DomainConstants;
+import com.elead.platform.common.dto.QueryDto;
 import com.elead.platform.common.entity.BaseObject;
 import com.elead.platform.common.service.dao.CrudDao;
+import com.elead.platform.common.service.filter.FilterUtil;
 import com.elead.platform.common.utils.InstanceUtil;
 import com.elead.platform.common.utils.SysConstants;
 import com.google.common.collect.Lists;
@@ -131,9 +130,10 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 			int batchSize = entityList.size();
 			String sqlStatement = sqlStatement(SqlMethod.INSERT_ONE);
 			for (int i = 0; i < size; i++) {
-				if (StringUtils.isEmpty(entityList.get(i).getId())) {
+				// TODO ID修改为Integer类型
+				/*if (StringUtils.isEmpty(entityList.get(i).getId())) {
 					entityList.get(i).setId(IdWorker.get32UUID());
-				}
+				}*/
 				batchSqlSession.insert(sqlStatement, entityList.get(i));
 				if (i >= 1 && i % batchSize == 0) {
 					batchSqlSession.flushStatements();
@@ -425,24 +425,5 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 
 	public List<T> selectList(Wrapper<T> entity) {
 		return crudDao.selectList(entity);
-	}
-
-	public Page<T> selectPageList(QueryDto queryDto) {
-		Page<T> page = new Page<>();
-
-		com.baomidou.mybatisplus.mapper.Wrapper wrapper;
-		try {
-			wrapper = FilterUtil.parsePropertyFilterExp(queryDto.getFilter(),
-					queryDto.getOrderBy());
-		} catch (Exception ex) {
-			logger.error("初始化查询条件异常:", ex);
-			wrapper = Condition.create();
-		}
-		page.setCurrent(queryDto.getPageIndex());
-		page.setSize(queryDto.getPageSize());
-
-		wrapper.and("del_flag={0}", Integer.valueOf(DomainConstants.DEL_FLAG_NORMAL));
-		page = this.selectPage(page, wrapper);
-		return page;
 	}
 }

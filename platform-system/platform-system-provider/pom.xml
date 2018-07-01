@@ -256,7 +256,7 @@
     </dependencies>
 
     <build>
-        <finalName>ppm_project_provider</finalName>
+        <finalName>platform-system-provider</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

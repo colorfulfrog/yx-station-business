@@ -1,10 +1,10 @@
 package com.elead.platform.common.entity;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * 树结构业务对象基础类：ELTreeItem

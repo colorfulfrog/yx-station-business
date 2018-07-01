@@ -3,15 +3,7 @@ package com.elead.platform.common.constants;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * CodeUtils
- *
- * @author wangxz
- * @date 2017/3/22
- */
 public class CodeUtils {
-
-
     private CodeUtils() {
     }
 

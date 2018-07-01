@@ -44,8 +44,9 @@ public class LoginVerifyAspectHandler extends HandlerInterceptorAdapter {
 			}
 
 			String elUserInfo = URLDecoder.decode(userJson, "utf-8");
-			if(StringUtils.isBlank(elUserInfo) || elUserInfo.length() < 6 ||
-					StringUtils.isBlank(JsonMapper.fromJsonString(elUserInfo, ELUser.class).getId())) {
+			//TODO ID修改为Integer类型
+			if(StringUtils.isBlank(elUserInfo) || elUserInfo.length() < 6 || null == JsonMapper.fromJsonString(elUserInfo, ELUser.class).getId()
+					/*StringUtils.isBlank(JsonMapper.fromJsonString(elUserInfo, ELUser.class).getId())*/) {
 				writeNotLogin(response);
 				return false;
 			}

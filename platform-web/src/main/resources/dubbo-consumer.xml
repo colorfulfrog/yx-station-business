@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<dubbo:application name="platform-web" owner="platform-web"
+		organization="elead" logger="slf4j" />
+	
+	<dubbo:registry address="${DUBBO_ZK_URL}"
+		client="curator" file="/data/zookeeper/platform-web.cache" />
+	
+	<dubbo:consumer timeout="500000" retries="0" />
+	
+	<dubbo:reference id="projectService"
+		interface="com.elead.ppm.project.domain.service.ELProjectService"
+		protocol="dubbo" retries="3" version="1.0.0" />
+</beans>

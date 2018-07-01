@@ -9,15 +9,15 @@ import lombok.Data;
 /**
  * BaseEntity
  *
- * @author wangxz
- * @date 2017/3/22
+ * @author lw
  */
 @Data
 public abstract class BaseObject implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.INPUT)
-    private String id;
+    //@TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     
 }
 

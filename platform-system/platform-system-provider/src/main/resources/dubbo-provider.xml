@@ -5,7 +5,7 @@
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<dubbo:application name="ppm_project_provider" owner="ppm_project_provider" organization="elead" logger="slf4j"/>
-	<dubbo:registry address="${DUBBO_ZK_URL:zookeeper://127.0.0.1:2181}" 
+	<dubbo:registry address="${DUBBO_ZK_URL}" 
 		client="curator" file="/data/zookeeper/ppm_project_provider.cache"/>
 	<!--<dubbo:monitor protocol="registry"/> -->
 	<dubbo:protocol name="dubbo" port="-1" />

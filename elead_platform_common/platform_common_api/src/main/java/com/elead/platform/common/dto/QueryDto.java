@@ -1,10 +1,10 @@
 package com.elead.platform.common.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,27 +14,6 @@ import lombok.Data;
 @Data
 public class QueryDto implements Serializable {
     private static final long serialVersionUID = 1L;
-
-//    @ApiModelProperty("编码")
-//    private String code;
-//
-//    @ApiModelProperty("名称")
-//    private String name;
-//
-//    @ApiModelProperty("创建者")
-//    private String createBy; // 创建者
-//
-//    @ApiModelProperty("创建时间")
-//    private Date createTime; // 创建时间
-//
-//    @ApiModelProperty("更新者")
-//    private String updateBy; // 更新者
-//
-//    @ApiModelProperty("更新")
-//    private Date updateTime; // 更新
-//
-//    @ApiModelProperty("删除标记（0：正常；1：删除；2：审核）")
-//    private String delFlag = "0"; // 删除标记（0：正常；1：删除；2：审核）
 
     @ApiModelProperty("页数，默认1")
     private int pageIndex = 1;
