@@ -91,7 +91,6 @@ public abstract class BaseController {
 		binder.registerCustomEditor(Date.class, new DateEditor());
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected ELUser getLoginUser() {
 		try {
 			String elUserInfo = URLDecoder.decode(request.getHeader("el_user_json_str"), "utf-8");
@@ -106,27 +105,7 @@ public abstract class BaseController {
 	/**
 	 * @param
 	 * @return
-	 * @description 权限验证
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
-	 */
-//	@ResponseBody
-//	@ResponseStatus(code = HttpStatus.FORBIDDEN)
-//	@ExceptionHandler(UnauthorizedException.class)
-//	public CommonResponse exceptionHandler(Exception ex) throws Exception {
-//		logger.error(SysConstants.Exception_Head, ex);
-//		return CommonResponse.createCustomCommonResponse(String.valueOf(HttpStatus.FORBIDDEN.value()),
-//				"没有开通权限");
-//	}
-
-	/**
-	 * @param
-	 * @return
 	 * @description 参数验证
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -141,9 +120,6 @@ public abstract class BaseController {
 	* @param
 	* @return
 	* @description 参数绑定验证
-	* @author wangxz
-	* @version v1.0
-	* @date 2017/9/6
 	*/
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -158,9 +134,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 缺少参数
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -175,9 +148,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 参数解析
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -193,9 +163,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 参数验证失败
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -213,9 +180,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 参数验证
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -230,9 +194,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 不支持当前请求
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
@@ -247,9 +208,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 不支持当前媒体类型
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
@@ -264,9 +222,6 @@ public abstract class BaseController {
 	 * @param
 	 * @return
 	 * @description 系统异常
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/9/6
 	 */
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)

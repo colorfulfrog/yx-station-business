@@ -14,8 +14,6 @@ import com.google.common.collect.Lists;
 /**
  * TreeService
  * @param <T> the type parameter
- * @author wangxz
- * @date 2017/03/22
  */
 @Transactional(readOnly = true)
 public abstract class TreeService<D extends CrudDao<T>,T extends ELTreeItem<T>> extends CrudService<D, T> {

@@ -25,11 +25,8 @@ import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.baomidou.mybatisplus.toolkit.TableInfoHelper;
-import com.elead.platform.common.constants.DomainConstants;
-import com.elead.platform.common.dto.QueryDto;
 import com.elead.platform.common.entity.BaseObject;
 import com.elead.platform.common.service.dao.CrudDao;
-import com.elead.platform.common.service.filter.FilterUtil;
 import com.elead.platform.common.utils.InstanceUtil;
 import com.elead.platform.common.utils.SysConstants;
 import com.google.common.collect.Lists;
@@ -37,8 +34,6 @@ import com.google.common.collect.Lists;
 /**
  * Service基类
  * @param <T> the type parameter
- * @author wangxz
- * @date 2017/03/22
  */
 @Transactional(readOnly = true)
 public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
@@ -62,9 +57,6 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 	 * @param
 	 * @return
 	 * @description 批量操作 SqlSession
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/8/8
 	 */
 	protected SqlSession sqlSessionBatch() {
 		return SqlHelper.sqlSessionBatch(this.currentModelClass());
@@ -74,9 +66,6 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 	 * @param
 	 * @return
 	 * @description 获取SqlStatement
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/8/8
 	 */
 	protected String sqlStatement(SqlMethod sqlMethod) {
 		return SqlHelper.table(this.currentModelClass()).getSqlStatement(sqlMethod.getMethod());
@@ -116,9 +105,6 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 	 * @param entityList 列表
 	 * @return bool
 	 * @description 批量插入
-	 * @author wangxz
-	 * @version v1.0
-	 * @date 2017/8/8
 	 */
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public boolean insertBatch(List<T> entityList) {
@@ -285,7 +271,6 @@ public abstract class CrudService<D extends CrudDao<T>,T extends BaseObject> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public T update(T entity) {
 		try {

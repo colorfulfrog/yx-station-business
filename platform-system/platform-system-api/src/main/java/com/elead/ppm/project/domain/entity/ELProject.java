@@ -1,9 +1,7 @@
 package com.elead.ppm.project.domain.entity;
 
 import java.util.Date;
-import java.util.List;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.elead.platform.common.entity.ELTreeItem;
 

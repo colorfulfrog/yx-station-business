@@ -20,6 +20,7 @@ import com.elead.platform.common.utils.JsonMapper;
 import com.elead.ppm.project.consumer.ProjConsumerApplication;
 import com.elead.ppm.project.consumer.controller.ELProjectController;
 import com.elead.ppm.project.domain.entity.ELProject;
+import com.yxhl.platform.common.redis.util.RedisUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ProjConsumerApplication.class)
@@ -31,6 +32,10 @@ public class ProjectControllerTest extends MockMvcResultMatchers {
     WebApplicationContext webApplicationConnect;
 	
 	ELProjectController projectController;
+	
+	@Autowired
+	private RedisUtil redisUtil;
+	
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationConnect).build(); 
@@ -55,5 +60,16 @@ public class ProjectControllerTest extends MockMvcResultMatchers {
 		request = MockMvcRequestBuilders.post("/proj/project").contentType(MediaType.APPLICATION_JSON_VALUE).content(content).header("user_json_str", el_user_json_str);
 		ResultActions result =   mvc.perform(request);
 		result.andExpect(status().isOk()).andExpect(content().string("success"));
+	}
+	
+	@Test
+	public void testRedis() {
+		ELProject project = new ELProject();
+		project.setId(100001);
+		project.setName("测试项目");
+		project.setCreateBy("1");
+		redisUtil.set("project:100001", project, 600L);
+		
+		System.out.println("Get Project:100001 from redis:" + redisUtil.get("project:100001"));
 	}
 }

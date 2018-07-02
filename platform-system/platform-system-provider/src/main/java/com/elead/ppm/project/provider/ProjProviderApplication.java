@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ServletComponentScan
-@ComponentScan(basePackages="com.elead")
+@ComponentScan(basePackages= {"com.elead","com.yxhl"})
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class } )
 @EnableTransactionManagement //启用事务
 @ImportResource("classpath:dubbo-provider.xml")

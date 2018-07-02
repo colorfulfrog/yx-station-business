@@ -6,6 +6,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.elead.platform.common.web.config.WebConfig;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @ImportResource("classpath:dubbo-consumer.xml")
 @Import({Settings.class, WebConfig.class})
+@ComponentScan(basePackages= {"com.elead","com.yxhl"})
 public class ProjConsumerApplication {
     /**
      * Logger

@@ -8,7 +8,6 @@ import com.elead.ppm.project.domain.entity.ELProject;
 
 /**
  * 项目表DAO接口
- * @author wangxz
  */
 
 @Mapper

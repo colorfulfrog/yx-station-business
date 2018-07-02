@@ -1,13 +1,6 @@
 package com.elead.platform.common.entity;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import lombok.Data;
-
-import com.baomidou.mybatisplus.annotations.TableField;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 业务对象基础类：ELItem
@@ -31,11 +24,6 @@ public class ELItem extends ELObject {
 	 * 描述
 	 */
 	private String description;
-
-
-	@TableField(exist = false)
-	//private Map<String, Object> extAttr;
-	private Map<String, Object> flexAttrs = Maps.newHashMap();
 
 	public ELItem() {
 		super();

@@ -2,6 +2,7 @@ package com.elead.ppm.project.consumer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class ELProjectController extends BaseController {
 
 	@ApiOperation("保存项目基本信息")
 	@PostMapping(value = "/project", produces = "application/json;charset=UTF-8")
-	public CommonResponse addProject(ELProject project) {
+	public CommonResponse addProject(@RequestBody ELProject project) {
 		try{
 			projectService.insert(project);
 			System.out.println("返回自增ID："+project.getId());

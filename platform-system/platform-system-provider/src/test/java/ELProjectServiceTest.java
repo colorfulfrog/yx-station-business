@@ -1,6 +1,8 @@
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.elead.ppm.project.domain.entity.ELProject;
 import com.elead.ppm.project.domain.service.ELProjectService;
 import com.elead.ppm.project.provider.ProjProviderApplication;
+import com.yxhl.platform.common.redis.util.RedisUtil;
 
 
 /**
@@ -22,6 +25,8 @@ public class ELProjectServiceTest {
 	
 	@Autowired
 	ELProjectService projectService;
+	@Autowired
+	private RedisUtil redisUtil;
 	
 	@Test
 	public void testAdd(){
@@ -34,6 +39,10 @@ public class ELProjectServiceTest {
 		entity.setFinishTime(new Date());
 		projectService.insert(entity);
 		System.out.println("新增的ID为："+entity.getId());
+		
+		redisUtil.set("project:"+entity.getId(), entity, 600L);
+		
+		System.out.println(redisUtil.get("project:"+entity.getId()));
 	}
 	
 	@Test
