@@ -6,6 +6,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
@@ -16,16 +17,14 @@ import com.elead.platform.common.web.config.Settings;
 import com.elead.platform.common.web.config.WebConfig;
 
 /**
- * The type  consumer application.
- *
- * @author wangxz
- * @date 2017/3/22
+ * 启动类
  */
 @RestController
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @ImportResource("classpath:dubbo-consumer.xml")
 @Import({Settings.class, WebConfig.class})
 @ComponentScan(basePackages= {"com.elead","com.yxhl"})
+@ServletComponentScan
 public class ProjConsumerApplication {
     /**
      * Logger
