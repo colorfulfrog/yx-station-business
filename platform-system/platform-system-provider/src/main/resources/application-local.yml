@@ -65,13 +65,3 @@ server:
   port: 8180
   
 DUBBO_ZK_URL: zookeeper://127.0.0.1:2181
-
-#oss 配置
-aliyun: 
-  oss: 
-    endpoint: http://oss-cn-shenzhen.aliyuncs.com
-    osswebsite: http://tsyly.oss-cn-shenzhen.aliyuncs.com/
-    accessKeyId: LTAI74qNL5iRxwsC
-    accessKeySecret: JSchOF3kQ68tFEFr4Bb9XnpSduYzzQ
-    bucketName: tsyly
-    testBucket: tsyly
