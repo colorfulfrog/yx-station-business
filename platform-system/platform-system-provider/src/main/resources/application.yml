@@ -5,6 +5,6 @@ spring:
     active: local
 
 mybatis:
-  typeAliasesPackage: com.elead.ppm.project.domain
+  typeAliasesPackage: com.yxhl.stationbiz.system.domain
   config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mybatis/*.xml

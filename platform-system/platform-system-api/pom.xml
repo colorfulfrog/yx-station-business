@@ -25,12 +25,12 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
         <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_api</artifactId>
             <version>${common.api.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_utils</artifactId>
             <version>${common.utils.version}</version>
         </dependency>

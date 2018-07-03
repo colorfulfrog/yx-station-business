@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ppm_project</artifactId>
-        <groupId>com.elead</groupId>
+        <groupId>com.yxhl</groupId>
         <version>1.0.0-Refactor</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,73 +15,72 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--根据具体模块修改-->
-        <start-class>com.elead.ppm.project.consumer.ProjConsumerApplication</start-class>
+        <start-class>com.yxhl.stationbiz.web.consumer.WebConsumerApplication</start-class>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_web</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_system_domain</artifactId>
             <version>${project.version}</version>
         </dependency>               
          <dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_risk_domain</artifactId>
             <version>${project.version}</version>
         </dependency> 
          <dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_issue_domain</artifactId>
             <version>${project.version}</version>
         </dependency> 
           <dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_requirement_domain</artifactId>
             <version>${project.version}</version>
         </dependency> 
         <dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_product_domain</artifactId>
             <version>${project.version}</version>
         </dependency>         
         <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-			<groupId>com.elead</groupId>
+			<groupId>com.yxhl</groupId>
 			<artifactId>platform_common_utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_project_domain</artifactId>
          	<version>${project.version}</version>
         </dependency>
 		<dependency> 
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_plan_domain</artifactId>
          	<version>${project.version}</version>
         </dependency>
         <dependency>
-			<groupId>com.elead</groupId>
+			<groupId>com.yxhl</groupId>
 			<artifactId>ppm_message_domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>ppm_doc_domain</artifactId>
             <version>${project.version}</version>
          </dependency>
         <dependency>
-        <groupId>com.elead</groupId>
+        <groupId>com.yxhl</groupId>
 	      <artifactId>platform_common_type</artifactId>
 	      <version>${project.version}</version>
 	      <exclusions>

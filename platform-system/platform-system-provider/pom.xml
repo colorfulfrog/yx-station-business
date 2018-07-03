@@ -13,152 +13,9 @@
     <name>platform-system-provider</name>
     <url>http://maven.apache.org</url>
     <properties>
-        <start-class>com.elead.ppm.project.provider.ProjProviderApplication</start-class>
+        <start-class>com.yxhl.stationbiz.system.provider.SysProviderApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <!--区分环境配置-->
-    <!-- <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <profileActive>local</profileActive>
-                dubbo
-                <dubbo.container>logback,spring</dubbo.container>
-                <dubbo.shutdown.hook>true</dubbo.shutdown.hook>
-                <dubbo.application.name>ppm_reports_provider</dubbo.application.name>
-                <dubbo.application.owner>elead</dubbo.application.owner>
-                <dubbo.registry.protocol>zookeeper</dubbo.registry.protocol>
-                <dubbo.registry.address>127.0.0.1:2181</dubbo.registry.address>
-                <dubbo.registry.client>curator</dubbo.registry.client>
-                <dubbo.registry.file>tmp/ppm_reports_provider.cache</dubbo.registry.file>
-                <dubbo.protocol.dubbo.port>-1</dubbo.protocol.dubbo.port>
-                <dubbo.application.logger>slf4j</dubbo.application.logger>
-                <dubbo.logback.level>info</dubbo.logback.level>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <profileActive>dev</profileActive>
-                dubbo
-                <dubbo.container>logback,spring</dubbo.container>
-                <dubbo.shutdown.hook>true</dubbo.shutdown.hook>
-                <dubbo.application.name>ppm_reports_provider</dubbo.application.name>
-                <dubbo.application.owner>elead</dubbo.application.owner>
-                <dubbo.registry.protocol>zookeeper</dubbo.registry.protocol>
-                <dubbo.registry.address>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</dubbo.registry.address>
-                <dubbo.registry.client>curator</dubbo.registry.client>
-                <dubbo.registry.file>/data/zookeeper/ppm_reports_provider.cache</dubbo.registry.file>
-                <dubbo.protocol.dubbo.port>-1</dubbo.protocol.dubbo.port>
-                <dubbo.application.logger>slf4j</dubbo.application.logger>
-                <dubbo.logback.level>error</dubbo.logback.level>
-                <dubbo.monitor.protocol>registry</dubbo.monitor.protocol>
-            </properties>
-        </profile>
-        <profile>
-			<id>devSZ</id>
-			<properties>
-				all
-				<app.server.ip>192.168.3.57</app.server.ip>
-				spring boot
-				<profileActive>prod</profileActive>
-				<app.writedb.url>jdbc:mysql://192.168.3.57:3306/ppm</app.writedb.url>
-				<app.writedb.user>root</app.writedb.user>
-				<app.writedb.pwd>123456</app.writedb.pwd>
-				
-				<app.readdb.url>jdbc:mysql://192.168.3.57:3306/ppm</app.readdb.url>
-				<app.readdb.user>root</app.readdb.user>
-				<app.readdb.pwd>123456</app.readdb.pwd>
-				rabbitmq
-				<app.rabbitmq.port>5672</app.rabbitmq.port>
-				<app.rabbitmq.uname>elppm_user</app.rabbitmq.uname>
-				<app.rabbitmq.pwd>elppm</app.rabbitmq.pwd>
-				dubbo
-				<dubbo.container>logback,spring</dubbo.container>
-				<dubbo.shutdown.hook>true</dubbo.shutdown.hook>
-				<dubbo.application.name>ppm_reports_provider</dubbo.application.name>
-				<dubbo.application.owner>elead</dubbo.application.owner>
-				<dubbo.registry.protocol>zookeeper</dubbo.registry.protocol>
-				<dubbo.registry.address>192.168.3.57:2181</dubbo.registry.address>
-				<dubbo.registry.client>curator</dubbo.registry.client>
-				<dubbo.registry.file>/data/zookeeper/ppm_reports_provider.cache</dubbo.registry.file>
-				<dubbo.protocol.dubbo.port>-1</dubbo.protocol.dubbo.port>
-				<dubbo.application.logger>slf4j</dubbo.application.logger>
-				<dubbo.logback.level>info</dubbo.logback.level>
-				<dubbo.monitor.protocol></dubbo.monitor.protocol>
-			</properties>
-		</profile>
-		<profile>
-			<id>sitSZ</id>
-			<properties>
-				all
-				<app.server.ip>172.18.109.167</app.server.ip>
-				spring boot
-				<profileActive>prod</profileActive>
-				<app.writedb.url>jdbc:mysql://172.18.109.167:3306/ppm</app.writedb.url>
-				<app.writedb.user>elppm_user</app.writedb.user>
-				<app.writedb.pwd>elppm</app.writedb.pwd>
-				
-				<app.readdb.url>jdbc:mysql://172.18.109.167:3306/ppm</app.readdb.url>
-				<app.readdb.user>elppm_user</app.readdb.user>
-				<app.readdb.pwd>elppm</app.readdb.pwd>
-				rabbitmq
-				<app.rabbitmq.port>5672</app.rabbitmq.port>
-				<app.rabbitmq.uname>elppm_user</app.rabbitmq.uname>
-				<app.rabbitmq.pwd>elppm</app.rabbitmq.pwd>
-				dubbo
-				<dubbo.container>logback,spring</dubbo.container>
-				<dubbo.shutdown.hook>true</dubbo.shutdown.hook>
-				<dubbo.application.name>ppm_reports_provider</dubbo.application.name>
-				<dubbo.application.owner>elead</dubbo.application.owner>
-				<dubbo.registry.protocol>zookeeper</dubbo.registry.protocol>
-				<dubbo.registry.address>172.18.109.167:2181</dubbo.registry.address>
-				<dubbo.registry.client>curator</dubbo.registry.client>
-				<dubbo.registry.file>/data/zookeeper/ppm_reports_provider.cache</dubbo.registry.file>
-				<dubbo.protocol.dubbo.port>-1</dubbo.protocol.dubbo.port>
-				<dubbo.application.logger>slf4j</dubbo.application.logger>
-				<dubbo.logback.level>info</dubbo.logback.level>
-				<dubbo.monitor.protocol></dubbo.monitor.protocol>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				all
-				<app.server.ip>119.23.124.27</app.server.ip>
-				spring boot
-				<profileActive>prod</profileActive>
-				<app.writedb.url>jdbc:mysql://119.23.124.27:3306/ppm</app.writedb.url>
-				<app.writedb.user>elppm_user</app.writedb.user>
-				<app.writedb.pwd>elppm</app.writedb.pwd>
-				
-				<app.readdb.url>jdbc:mysql://119.23.124.27:3306/ppm</app.readdb.url>
-				<app.readdb.user>elppm_user</app.readdb.user>
-				<app.readdb.pwd>elppm</app.readdb.pwd>
-				rabbitmq
-				<app.rabbitmq.port>5672</app.rabbitmq.port>
-				<app.rabbitmq.uname>elppm_user</app.rabbitmq.uname>
-				<app.rabbitmq.pwd>elppm</app.rabbitmq.pwd>
-				dubbo
-				<dubbo.container>logback,spring</dubbo.container>
-				<dubbo.shutdown.hook>true</dubbo.shutdown.hook>
-				<dubbo.application.name>ppm_reports_provider</dubbo.application.name>
-				<dubbo.application.owner>elead</dubbo.application.owner>
-				<dubbo.registry.protocol>zookeeper</dubbo.registry.protocol>
-				<dubbo.registry.address>119.23.124.27:2181</dubbo.registry.address>
-				<dubbo.registry.client>curator</dubbo.registry.client>
-				<dubbo.registry.file>/data/zookeeper/ppm_reports_provider.cache</dubbo.registry.file>
-				<dubbo.protocol.dubbo.port>-1</dubbo.protocol.dubbo.port>
-				<dubbo.application.logger>slf4j</dubbo.application.logger>
-				<dubbo.logback.level>error</dubbo.logback.level>
-				<dubbo.monitor.protocol>registry</dubbo.monitor.protocol>
-			</properties>
-		</profile>
-    </profiles> -->
 
     <dependencies>
         <dependency>
@@ -167,12 +24,12 @@
             <version>${project.version}</version>
         </dependency>
        <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_redis</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.elead</groupId>
+            <groupId>com.yxhl</groupId>
             <artifactId>platform_common_service</artifactId>
             <version>${project.version}</version>
         </dependency>

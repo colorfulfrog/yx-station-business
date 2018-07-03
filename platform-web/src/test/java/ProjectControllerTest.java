@@ -15,15 +15,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.elead.platform.common.entity.ELUser;
-import com.elead.platform.common.utils.JsonMapper;
-import com.elead.ppm.project.consumer.ProjConsumerApplication;
-import com.elead.ppm.project.consumer.controller.ELProjectController;
-import com.elead.ppm.project.domain.entity.ELProject;
+import com.yxhl.platform.common.entity.ELUser;
 import com.yxhl.platform.common.redis.util.RedisUtil;
+import com.yxhl.platform.common.utils.JsonMapper;
+import com.yxhl.stationbiz.system.domain.entity.ELProject;
+import com.yxhl.stationbiz.web.consumer.WebConsumerApplication;
+import com.yxhl.stationbiz.web.consumer.controller.ELProjectController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = ProjConsumerApplication.class)
+@SpringBootTest(classes = WebConsumerApplication.class)
 @WebAppConfiguration
 public class ProjectControllerTest extends MockMvcResultMatchers {
 	private MockMvc mvc;

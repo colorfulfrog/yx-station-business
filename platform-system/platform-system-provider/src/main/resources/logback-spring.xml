@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <!-- property name="APP_NAME" value="ppm_project_provider"/>  -->
-	<!--<contextName>ppm_project_provider</contextName>-->
     <!-- 控制台彩色打印 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex"
@@ -17,7 +15,7 @@
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
 
-    <property name="LOG_FILE" value="/usr/local/tomcat/logs/ppm_project_provider"/>
+    <property name="LOG_FILE" value="/usr/local/tomcat/logs/platform_system_provider"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -26,7 +24,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.elead.ppm.project.provider.ProjProviderApplication" level="INFO"/>
+    <logger name="com.yxhl.stationbiz.system.provider.SysProviderApplication" level="INFO"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     	<file>${LOG_FILE}.log</file>
@@ -40,7 +38,7 @@
     </appender>
 
     <springProfile name="local">
-        <logger name="com.elead.ppm" level="DEBUG"/>
+        <logger name="com.yxhl.stationbiz" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
@@ -48,7 +46,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <logger name="com.elead.ppm" level="DEBUG"/>
+        <logger name="com.yxhl.stationbiz" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>

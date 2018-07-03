@@ -5,7 +5,7 @@
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	
 	<dubbo:application name="platform-web" owner="platform-web"
-		organization="elead" logger="slf4j" />
+		organization="yxhl" logger="slf4j" />
 	
 	<dubbo:registry address="${DUBBO_ZK_URL}"
 		client="curator" file="/data/zookeeper/platform-web.cache" />
@@ -13,6 +13,6 @@
 	<dubbo:consumer timeout="500000" retries="0" />
 	
 	<dubbo:reference id="projectService"
-		interface="com.elead.ppm.project.domain.service.ELProjectService"
+		interface="com.yxhl.stationbiz.system.domain.service.ELProjectService"
 		protocol="dubbo" retries="3" version="1.0.0" />
 </beans>

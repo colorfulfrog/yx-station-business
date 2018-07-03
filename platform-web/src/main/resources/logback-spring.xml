@@ -38,10 +38,10 @@
         </triggeringPolicy>
     </appender>
 
-    <logger name="com.elead.ppm.project.consumer.ProjConsumerApplication" level="INFO"/>
+    <logger name="com.yxhl.stationbiz.web.consumer.WebConsumerApplication" level="INFO"/>
     
     <springProfile name="local">
-        <logger name="com.elead.ppm" level="DEBUG"/>
+        <logger name="com.yxhl.stationbiz" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
@@ -49,7 +49,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <logger name="com.elead.ppm" level="DEBUG"/>
+        <logger name="com.yxhl.stationbiz" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="FILE"/>
         </root>

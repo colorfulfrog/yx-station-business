@@ -1,25 +1,23 @@
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.elead.ppm.project.domain.entity.ELProject;
-import com.elead.ppm.project.domain.service.ELProjectService;
-import com.elead.ppm.project.provider.ProjProviderApplication;
 import com.yxhl.platform.common.redis.util.RedisUtil;
+import com.yxhl.stationbiz.system.domain.entity.ELProject;
+import com.yxhl.stationbiz.system.domain.service.ELProjectService;
+import com.yxhl.stationbiz.system.provider.SysProviderApplication;
 
 
 /**
  * Junit Test
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes=ProjProviderApplication.class)
+@SpringBootTest(classes=SysProviderApplication.class)
 public class ELProjectServiceTest {
 	
 	
@@ -34,15 +32,15 @@ public class ELProjectServiceTest {
 		entity.setParentId("1");
 		entity.setCreateBy("1");
 		entity.setUpdateBy("1");
-		entity.setName("Project3");
+		entity.setName("Project6");
 		entity.setStartTime(new Date());
 		entity.setFinishTime(new Date());
 		projectService.insert(entity);
 		System.out.println("新增的ID为："+entity.getId());
 		
 		redisUtil.set("project:"+entity.getId(), entity, 600L);
-		
-		System.out.println(redisUtil.get("project:"+entity.getId()));
+		ELProject object = (ELProject)redisUtil.get("project:"+entity.getId());
+		System.out.println("============================ProjectName is:"+object.getName());
 	}
 	
 	@Test

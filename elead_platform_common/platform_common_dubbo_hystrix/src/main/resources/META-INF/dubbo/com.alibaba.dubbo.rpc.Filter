@@ -1,1 +1,0 @@
-hystrix=com.elead.platform.common.hystrix.dubbo.DubboHystrixFilter

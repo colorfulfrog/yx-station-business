@@ -4,10 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<dubbo:application name="ppm_project_provider" owner="ppm_project_provider" organization="elead" logger="slf4j"/>
+	<dubbo:application name="platform-system-provider" owner="platform-system-provider" organization="yxhl" logger="slf4j"/>
 	<dubbo:registry address="${DUBBO_ZK_URL}" 
-		client="curator" file="/data/zookeeper/ppm_project_provider.cache"/>
-	<!--<dubbo:monitor protocol="registry"/> -->
+		client="curator" file="/data/zookeeper/platform-system-provider.cache"/>
 	<dubbo:protocol name="dubbo" port="-1" />
 
 	<dubbo:provider timeout="1200000" loadbalance="leastactive"
@@ -15,7 +14,7 @@
 	<dubbo:protocol name="dubbo" />
 
 	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service interface="com.elead.ppm.project.domain.service.ELProjectService"
+	<dubbo:service interface="com.yxhl.stationbiz.system.domain.service.ELProjectService"
 		ref="projectService" protocol="dubbo" executes="10000"
 		actives="1000" version="1.0.0" />
 </beans>
