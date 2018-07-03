@@ -5,6 +5,7 @@ target/
 .settings/
 .project
 .classpath
+.factorypath
 
 # idea ignore
 .idea/

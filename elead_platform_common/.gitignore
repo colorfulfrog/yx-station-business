@@ -5,6 +5,8 @@ target/
 .settings/
 .project
 .classpath
+.apt_generated
+.factorypath
 
 # idea ignore
 .idea/
