@@ -7,6 +7,7 @@ target/
 .classpath
 .apt_generated
 .factorypath
+.springBeans
 
 # idea ignore
 .idea/
