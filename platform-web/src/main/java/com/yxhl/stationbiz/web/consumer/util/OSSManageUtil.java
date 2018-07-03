@@ -1,4 +1,4 @@
-package com.yxhl.stationbiz.system.provider.util;
+package com.yxhl.stationbiz.web.consumer.util;
 
 
 import java.io.ByteArrayInputStream;
@@ -16,7 +16,7 @@ import com.aliyun.oss.OSSException;
 import com.aliyun.oss.ServiceException;
 import com.aliyun.oss.model.CannedAccessControlList;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.yxhl.stationbiz.system.provider.config.OSSConfig;
+import com.yxhl.stationbiz.web.consumer.config.OSSConfig;
 
 /**
  * 对OSS服务器进行上传删除等的处理
@@ -36,9 +36,9 @@ public class OSSManageUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String uploadFile(InputStream file,long contentLength,String fileName) throws Exception{
-		OSSClient ossClient=new OSSClient(ossConfig.get, OSSConfig.accessKeyId, OSSConfig.accessKeySecret);
-		String remoteFilePath = OSSConfig.testBucket.replaceAll("\\\\","/")+"/";
+	public String uploadFile(InputStream file,long contentLength,String fileName) throws Exception{
+		OSSClient ossClient=new OSSClient(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
+		String remoteFilePath = ossConfig.getTestBucket().replaceAll("\\\\","/")+"/";
 		//创建上传Object的Metadata
 		ObjectMetadata objectMetadata=new ObjectMetadata();
 		objectMetadata.setContentLength(contentLength);
@@ -51,11 +51,11 @@ public class OSSManageUtil {
 		}
 		objectMetadata.setContentDisposition("inline;filename=" + fileName);
 		//上传文件
-		ossClient.putObject(OSSConfig.bucketName, remoteFilePath + fileName, file, objectMetadata);
-		return OSSConfig.osswebsite+OSSConfig.testBucket+"/"+ fileName;
+		ossClient.putObject(ossConfig.getBucketName(), remoteFilePath + fileName, file, objectMetadata);
+		return ossConfig.getOsswebsite()+ossConfig.getTestBucket()+"/"+ fileName;
 	}
 
-	public static String imageFileUpload(byte[] fileByte, String user_avatar) throws Exception {  
+	public String imageFileUpload(byte[] fileByte, String user_avatar) throws Exception {  
 		String fileType = ".jpg";  
 		String[] types = new String[] { ".bmp", ".png", ".gif", ".jpeg", ".pjpeg", ".jpg" };  
 		for (int i = 0; i < types.length; i++) {  
@@ -69,14 +69,14 @@ public class OSSManageUtil {
 		String fileName = (System.currentTimeMillis() + (new Random(999999).nextLong())) + fileType;  
 		try {  
 			InputStream input = new ByteArrayInputStream(fileByte);  
-			String bucketName = OSSConfig.bucketName;  
+			String bucketName = ossConfig.getBucketName();  
 			// 使用默认的OSS服务器地址创建OSSClient对象。  
-			OSSClient client = new OSSClient(OSSConfig.endpoint, OSSConfig.accessKeyId, OSSConfig.accessKeySecret);
+			OSSClient client = new OSSClient(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
 			ensureBucket(client, bucketName);  
 			ObjectMetadata objectMeta = new ObjectMetadata();  
 			objectMeta.setContentLength(fileByte.length);  
 			client.putObject(bucketName, fileName, input, objectMeta);  
-			String saveUrl = OSSConfig.endpoint+"/"+OSSConfig.bucketName+"/"+ fileName;  
+			String saveUrl = ossConfig.getEndpoint()+"/"+ossConfig.getBucketName()+"/"+ fileName;  
 			return saveUrl;  
 		} catch (Exception e) {  
 			e.printStackTrace();  
@@ -84,7 +84,7 @@ public class OSSManageUtil {
 		}  
 	}  
 
-	public static void ensureBucket(OSSClient client, String bucketName)throws OSSException, ClientException {  
+	public void ensureBucket(OSSClient client, String bucketName)throws OSSException, ClientException {  
 		try {  
 			// 创建bucket  
 			client.createBucket(bucketName);  
@@ -106,7 +106,7 @@ public class OSSManageUtil {
 	 * @return void    返回类型 
 	 * @throws
 	 */
-	public static void deleteFile(String endpoint,String accessKeyId,String accessKeySecret,String bucketName,String filePath){
+	public void deleteFile(String endpoint,String accessKeyId,String accessKeySecret,String bucketName,String filePath){
 		OSSClient ossClient = new OSSClient(endpoint,accessKeyId, accessKeySecret);
 		ossClient.deleteObject(bucketName, filePath);
 
@@ -118,7 +118,7 @@ public class OSSManageUtil {
 	 * @param FilenameExtension 文件后缀
 	 * @return String 
 	 */
-	public static String contentType(String FilenameExtension){
+	public String contentType(String FilenameExtension){
 		FilenameExtension = FilenameExtension.toUpperCase();
 		if(FilenameExtension.equals("BMP")){return "image/bmp";}
 		if(FilenameExtension.equals("GIF")){return "image/gif";}
@@ -139,14 +139,6 @@ public class OSSManageUtil {
 		return "text/html";
 	}
 
-	//测试
-	public static void main(String[]st)throws Exception{
-		//FileInputStream inputStream=new FileInputStream("d://aaa.jpg");
-		//System.out.println(uploadFile(inputStream,inputStream.available(),"test1.jpg"));
-		
-		//createDucket();
-	}
-	
 	//创建Ducket
 	/*public static void createDucket(){
 		OSSClient ossClient = new OSSClient("oss-cn-shenzhen.aliyuncs.com", OSSConfig.accessKeyId, OSSConfig.accessKeySecret);

@@ -2,10 +2,14 @@ package com.yxhl.platform.common.web.aop;
 
 
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Maps;
-import com.yxhl.platform.common.utils.CodeUtils;
-import com.yxhl.platform.common.utils.JsonMapper;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,19 +22,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Maps;
+import com.yxhl.platform.common.constants.CodeUtils;
+import com.yxhl.platform.common.utils.JsonMapper;
 
 /**
- * @author wangxz
  * @class_name ValidateAspectHandel
  * @description 验证注解类
- * @date 2017/4/20
  */
 @Component
 @Aspect

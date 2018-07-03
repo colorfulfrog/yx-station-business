@@ -1,4 +1,4 @@
-package com.yxhl.stationbiz.system.provider.config;
+package com.yxhl.stationbiz.web.consumer.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -53,5 +53,5 @@ public class OSSConfig {
 	}
 	public void setTestBucket(String testBucket) {
 		this.testBucket = testBucket;
-	} 
+	}
 }

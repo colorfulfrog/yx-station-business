@@ -15,7 +15,6 @@
     <properties>
         <start-class>com.yxhl.stationbiz.system.provider.SysProviderApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <aliyun-oss.version>2.2.3</aliyun-oss.version>
     </properties>
 
     <dependencies>
@@ -71,11 +70,6 @@
 		    <groupId>net.sf.jacob-project</groupId>
 		    <artifactId>jacob</artifactId>
 		    <version>1.14.3</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.aliyun.oss</groupId>
-		    <artifactId>aliyun-sdk-oss</artifactId>
-		    <version>${aliyun-oss.version}</version>
 		</dependency>
     </dependencies>
 

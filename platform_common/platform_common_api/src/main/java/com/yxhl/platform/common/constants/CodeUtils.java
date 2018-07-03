@@ -1,15 +1,27 @@
 package com.yxhl.platform.common.constants;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Maps;
+import com.yxhl.platform.common.utils.JsonMapper;
+import com.yxhl.platform.common.utils.StringHelper;
+
+/**
+ * CodeUtils
+ *
+ */
 public class CodeUtils {
+
+
     private CodeUtils() {
     }
 
     // code
     public static final String SUCCESS_CODE = "200"; // 成功
     public static final String FAIL_CODE = "999"; // 失败
+    public static final String BAD_REQUEST="400"; //Bad Request
     public static final String EXCEPTION_CODE = "11000"; // 异常
     public static final String SYSTEM_BUSY_CODE = "11011"; // 系统繁忙，接口熔断
     public static final String EMPTY_CODE = "10001"; // XXX字段数据为空
@@ -50,12 +62,7 @@ public class CodeUtils {
     public static final String APPOINT_REPEAT_ERROR_CODE = "10035";// 重复预约
     public static final String DATE_IS_ERROR_CODE = "10036";// 日期格式错误
     public static final String DATE_ERROR_CODE_HOUR_SECOND = "10037";// 时间格式错误
-    public static final String APPOINT_COST_ERROR_CODE = "10038";// 扣减点卡失败
-    public static final String APPOINT_FULL_ERROR_CODE = "10039";// 课程已被预约完
-    public static final String APPOINT_CANCELED_ERROR_CODE = "10040";// 课程预约已经被取消
-    public static final String APPOINT_NOROOM_ERROR_CODE = "10041";// 课程预约已经被取消
     public static final String DOUBLE_RANGE = "10042";
-    public static final String PROJECT_CODE_TYPE_CODE = "1043";// 项目码
     public static final String PRIMARY_KEY_DUPLICATE_ERROR_CODE = "1051";// 主键重复
     public static final String PRIMARY_KEY_DUPLICATE_ERROR_MSG = "主键id重复";
     public static final String NOT_ONE_TO_ONE_CODE = "10050";
@@ -65,23 +72,22 @@ public class CodeUtils {
 
     // message
     public static final String SUCCESS_MSG = "success"; // 成功
-    public static final String FAIL_MSG = "failure"; // 成功
-    public static final String EXCEPTION_MSG = "系统异常，请稍后重试"; // 异常
-    public static final String EMPTY_MSG = "字段数据为空 "; // XXX字段数据为空
-    public static final String TOO_LONG_MSG = "字段太长 ";// XXX字段太长
-    public static final String API_FREQ_MSG = "api freq out of limit"; // 接口调动频率超过限制
+    public static final String FAIL_MSG = "failure"; // 失败
+    public static final String DATA_WRONGFULNESS_MSG = "数据不合法"; // 数据不合法
+    public static final String EXCEPTION_MSG = "系统异常"; // 异常
+    public static final String EMPTY_MSG = "字段为空 "; // XXX字段数据为空
     public static final String EMPTY_LIST_MSG = "列表数据为空"; // 空白的列表
-    public static final String INVALID_MSG = "无效的字段 "; // 无效的字段
     public static final String EMPTY_DAT_MSG = "空白的单条数据"; // 空白的单条数据
     public static final String DATA_DUPLICATION_MSG = "数据重复"; // 数据重复
+    public static final String TOO_LONG_MSG = "字段过长 ";// XXX字段太长
     public static final String PAGENO_INVALID_MSG = "pageNo range 1~totalpage";
     public static final String PAGESIZE_INVALID_MSG = "pageSize range 1~100";
     public static final String INTEGER_MSG = " is int";
     public static final String INTEGER_RANGE_MSG = "  int rang is 0~2147483647";
     public static final String LONG_RANG_MSG = "  long rang is 0~9223372036854775807";
-    public static final String DATA_WRONGFULNESS_MSG = "数据不合法"; // 数据不合法
+
     public static final String IP_ERROR_MSG = " format error"; // ip地址格式错误
-    public static final String DATETIME_ERROR_MSG = " 日期格式错误"; // 日期格式错误
+    public static final String DATETIME_ERROR_MSG = " format error"; // 日期格式错误
     public static final String EN_ERROR_MSG = "must enter English";
     public static final String ZH_ERROR_MSG = "must enter Chinese";
     public static final String ID_ERROR_MSG = "should range 0~999999999999999999";
@@ -118,14 +124,10 @@ public class CodeUtils {
     public static final String ONE_TEN_REEOR_MSG = " 只能为1~10";
     public static final String ONE_NINETYNINE_ERROR_MSG = "should range 1~99";
     public static final String ID_ONE_REEOR_MSG = " should range 1~999999999999999999";
-    public static final String START_END_TIME_REEOR_MSG = " start_time 应该小于 end_time";
     public static final String TIME_LEN_REEOR_MSG = " should range 1~999";
-    public static final String TIME_LEN_OVER_REEOR_MSG = " time_len大小应该小于 time_start和time_end的范围";
-    public static final String LOST_COURSE_TIME_ERROR_MSG = "在 is_circle = 1 的情况下，course_time_ids不能为空";//
-    public static final String ONE_TO_FIFTY_ERROR_MSG = "范围是1到50之间";//
-    public static final String NOT_ONE_TO_ONE_MSG = "一对一关系";//
-    public static final String ACCESS_DATA_LIMIT_MAG="没有数据操作权限";
 
+    public static final String ACCESS_DATA_LIMIT_MSG="没有数据操作权限";
+    public static final String ACCESS_DATA_LIMIT_MSG_FORMAT=ACCESS_DATA_LIMIT_MSG + " [%s : %s]";
     /**
      * 校验ip是否合法
      *
@@ -140,5 +142,169 @@ public class CodeUtils {
         Matcher matcher = pattern.matcher(ipAddress);
         return matcher.matches();
 
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isIpv4("1.1.1.101"));
+        System.out.println(toErrorMessage("10001", "123"));
+    }
+
+    public static String toErrorMessage(String errorCode, String field) {
+        Map<String, String> map = Maps.newConcurrentMap();
+        //将所有非蛇形的属性名称转换为蛇形的形式返回
+        field = StringHelper.toUnderScoreCase(field);
+        switch (errorCode) {
+            case CodeUtils.EXCEPTION_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.EXCEPTION_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.EMPTY_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.EMPTY_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.TOO_LONG_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.TOO_LONG_MSG);
+                return JsonMapper.toJsonString(map);
+
+
+            case CodeUtils.PAGENO_INVALID_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.PAGENO_INVALID_MSG);
+                return JsonMapper.toJsonString(map);
+
+            case CodeUtils.PAGESIZE_INVALID_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.PAGESIZE_INVALID_MSG);
+                return JsonMapper.toJsonString(map);
+
+            case CodeUtils.INTEGER_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.INTEGER_MSG);
+                return JsonMapper.toJsonString(map);
+
+            case CodeUtils.INTEGER_RANGE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.INTEGER_RANGE_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DATA_WRONGFULNESS_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATA_WRONGFULNESS_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.IP_ERROR_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.IP_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+
+            case CodeUtils.DATETIME_ERROR_CODE:
+
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATETIME_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.LONG_RANG:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.LONG_RANG_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.EN_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.EN_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ZH_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ZH_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ID_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ID_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.MIN1_TO_127_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.MIN1_TO_127_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ZERO_ONE_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ZERO_ONE_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.VERSION_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.VERSION_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.MIN1_TO_16_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.MIN1_TO_16_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.SIBLING_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.SIBLING_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ZERO_TO_127_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ZERO_TO_127_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ZERO_TO_9999_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ZERO_TO_9999_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DATA_NOT_EXIST_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATA_NOT_EXIST_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.STATUS_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATA_STATUS_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.TYPE_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATA_TYPE_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DATE_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATE_TYPE_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.TYPE_ERROR_CODE_ZERO_ONE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATE_TYPE_ERROR_ONE_ZERO_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.TYPE_ERROR_CODE_ZERO_ONE_TWO:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATE_TYPE_ERROR_ONE_ZERO_TWO_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.IDS_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.IDS_ERROR__MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DATE_ERROR_CODE_HOUR_SECOND:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATE_HOUR_SECOND_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.ID_MIN1_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.ID_MIN1_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.APPOINT_REPEAT_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.APPOINT_REPEAT_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DATE_IS_ERROR_CODE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DATE_IS_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+            case CodeUtils.DOUBLE_RANGE:
+                map.put("code", errorCode);
+                map.put("message", field + " " + CodeUtils.DOUBLE_RANGE_ERROR_MSG);
+                return JsonMapper.toJsonString(map);
+
+            default:
+                map.put("code", DATA_WRONGFULNESS_CODE);
+                map.put("message", field + " " + CodeUtils.DATA_WRONGFULNESS_MSG);
+                return JsonMapper.toJsonString(map);
+        }
     }
 }
